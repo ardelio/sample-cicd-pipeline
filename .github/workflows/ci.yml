@@ -9,7 +9,8 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
       - name: Run tests
         run: make test-unit
 
@@ -17,10 +18,11 @@ jobs:
     name: Package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: make package
-        run: Create package
-      - name: Upload package artifact
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Create package
+        run: make package
+      - name: Upload build artifact
         uses: actions/upload-artifact@v1
         with:
           name: artifact
@@ -30,8 +32,9 @@ jobs:
     name: Deploy to development
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Download package
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Download build artifact
         uses: actions/download-artifact@v1
         with:
           name: artifact
