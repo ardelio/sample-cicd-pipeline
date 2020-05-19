@@ -1,0 +1,42 @@
+name: An exemplar CI/CD Pipeline
+on: push
+  branches:
+    - master
+
+jobs:
+  tests:
+    name: Unit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: make test-unit
+        run: make test-unit
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: make package
+        run: make package
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: artifact
+          path: ./dist/package.tar.gz
+
+  deploy-to-dev:
+    name: Deploy to development
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v1
+        with:
+          name: artifact
+      - name: Deploy
+        run: make deploy-dev artifact=./artifact/package.tar.gz
+    needs:
+      - tests
+      - package
