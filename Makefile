@@ -6,7 +6,6 @@ clean:
 deploy-dev:
 	@mkdir tmp
 	@tar -xzvf $(artifact) -C tmp
-	@
 
 mk-dist-dir:
 	@mkdir dist
